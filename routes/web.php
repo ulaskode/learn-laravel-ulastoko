@@ -19,8 +19,13 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
-Route::group(['prefix'=>'admin'],function(){
-    Route::get('login','Admin\Auth\LoginController@showLoginForm');
+Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
+    Route::get('login','Auth\LoginController@showLoginForm');
+    Route::post('login','Auth\LoginController@login')->name('admin.login');
+
+    Route::get('dashboard','UserController@index')->name('admin.dashboard')->middleware('auth:admin');
+    Route::get('logout','Auth\LoginController@logout')->name('admin.logout')->middleware('auth:admin');
+    
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

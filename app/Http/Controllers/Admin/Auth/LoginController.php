@@ -45,6 +45,22 @@ class LoginController extends Controller
      * 
      */
     public function login(Request $request){
+        // Validasi Login
+        $this->validate($request, [
+            'email' => 'required|email|exists:admins,email',
+            'password' => 'required|string'
+        ]);
+
+        // Mengambil data dari request
+        $auth = $request->only('email', 'password');
+
+        // Check autentikasi
+        if(auth()->guard('admin')->attempt($auth)){
+            return redirect()->intended(route('admin.dashboard'));
+        }else{
+            return redirect()->back()->with('error','Email atau password anda salah');
+        }
+
 
     }
 
@@ -56,5 +72,17 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
     }
+
+    /**
+     * Logout.
+     *
+     */
+
+    public function logout(){
+        auth()->guard('admin')->logout();
+        return redirect(route('admin.login'));
+    }
+    
 }
