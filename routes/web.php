@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes(['verify' => true]);
+
+Route::group(['prefix'=>'admin'],function(){
+    Route::get('login','Admin\Auth\LoginController@showLoginForm');
+});
+
+Route::get('/home', 'HomeController@index')->name('home');
