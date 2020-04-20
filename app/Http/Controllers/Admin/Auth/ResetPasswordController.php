@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+
 
 class ResetPasswordController extends Controller
 {
@@ -26,5 +30,39 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::DASHBOARD_ADMIN;
+
+    // view reset password
+    public function showLinkRequestForm(){
+        return view('admin.auth.passwords.email');
+    }
+
+    // show reset form
+    public function showResetForm(Request $request, $token=null){
+        return view('admin.auth.passwords.reset')->with([
+            'token' => $token,
+            'email' => $request->email
+        ]);
+    }
+
+    /**
+     * Get the guard to be used during password reset.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('admin');
+    }
+
+    /**
+     * Get the broker to be used during password reset.
+     *
+     * @return PasswordBroker
+     */
+    public function broker()
+    {
+        return Password::broker('admin');
+    }
+
 }

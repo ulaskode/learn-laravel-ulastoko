@@ -20,11 +20,25 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
-    Route::get('login','Auth\LoginController@showLoginForm');
-    Route::post('login','Auth\LoginController@login')->name('admin.login');
 
+    // Namespace Auth
+    Route::group(['namespace'=>'Auth'],function(){
+        // Login & Logout
+        Route::get('login','LoginController@showLoginForm');
+        Route::post('login','LoginController@login')->name('admin.login');
+        Route::get('logout','LoginController@logout')->name('admin.logout')->middleware('auth:admin');
+    
+        // Reset Password
+        Route::middleware(['guest:admin'])->group(function (){
+            Route::get('password/reset','ResetPasswordController@showLinkRequestForm')->name('admin.password.request');
+            Route::post('password/email','ForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
+            Route::get('password/reset/{token}','ResetPasswordController@showResetForm')->name('admin.password.reset');
+            Route::post('password/reset','ResetPasswordController@reset')->name('admin.password.update');
+        });
+    });
+
+    // Halaman
     Route::get('dashboard','UserController@index')->name('admin.dashboard')->middleware('auth:admin');
-    Route::get('logout','Auth\LoginController@logout')->name('admin.logout')->middleware('auth:admin');
     
 });
 
