@@ -37,7 +37,19 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
         });
     });
 
-    // Halaman
-    Route::get('dashboard','UserController@index')->name('admin.dashboard')->middleware('auth:admin');
+    Route::group(['middleware' => 'auth:admin'],function(){
+        // Halaman
+        Route::get('dashboard','UserController@index')->name('admin.dashboard');
+    
+        // Edit Profile & Change Password
+        Route::group(['prefix'=>'profile','middleware'=>'AdminProfile'],function(){
+            Route::get('/{admin:username}','AdminController@editProfile')->name('admin.profile');
+            Route::post('/{admin:username}','AdminController@saveProfile')->name('admin.saveProfile');
+
+            Route::get('/{admin:username}/password','AdminController@editPassword')->name('admin.password');
+            Route::post('/{admin:username}/password','AdminController@savePassword')->name('admin.savePassword');
+        });
+    });
+
     
 });

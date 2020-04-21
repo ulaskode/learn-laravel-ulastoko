@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>@yield('title') | {{config('app.name')}}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -88,7 +88,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
             <li class="nav-item">
-                <a href="{{route('admin.dashboard')}}" class="nav-link active">
+                <a href="{{route('admin.dashboard')}}" class="nav-link {{activeMenu('admin.dashboard')}}">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                     Dashboard
@@ -99,7 +99,7 @@
             <li class="nav-header">USER PROFILE</li>
 
             <li class="nav-item">
-                <a href="{{route('admin.dashboard')}}" class="nav-link">
+                <a href="{{route('admin.profile',auth()->user('admin')->username)}}" class="nav-link {{activeMenu('admin.profile')}}">
                 <i class="nav-icon fas fa-user-alt"></i>
                 <p>
                     Edit Profile

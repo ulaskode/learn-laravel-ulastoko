@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\AdminResetPasswordNotification;
+use Illuminate\Support\Str;
 
 class Admin extends Authenticatable
 {
@@ -15,7 +16,7 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','username'
     ];
 
     /**
@@ -31,5 +32,12 @@ class Admin extends Authenticatable
         $this->notify(new AdminResetPasswordNotification($token));
     }
 
+    public function setNameAttribute($value){
+        $this->attributes['name'] = Str::title($value);
+    }
+
+    public function setUsernameAttribute($value){
+        $this->attributes['username'] = Str::lower($value);
+    }
     
 }
