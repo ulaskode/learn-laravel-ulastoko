@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
 
 Auth::routes(['verify' => true]);
 
@@ -41,5 +41,3 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
     Route::get('dashboard','UserController@index')->name('admin.dashboard')->middleware('auth:admin');
     
 });
-
-Route::get('/home', 'HomeController@index')->name('home');
