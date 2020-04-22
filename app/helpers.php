@@ -7,3 +7,7 @@ function activeMenu($routeName = '') {
     }
     return $active;
 }
+
+function storedImage($path = ''){
+    return asset('images') . '/' . $path;
+}

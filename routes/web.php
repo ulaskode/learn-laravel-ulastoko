@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('index');
-
 Auth::routes(['verify' => true]);
 
 Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
@@ -48,6 +47,8 @@ Route::group(['prefix'=>'admin','namespace'=>'Admin'],function(){
 
             Route::get('/{admin:username}/password','AdminController@editPassword')->name('admin.password');
             Route::post('/{admin:username}/password','AdminController@savePassword')->name('admin.savePassword');
+
+            Route::post('/{admin:username}/photo','AdminController@savePhoto')->name('admin.savePhoto');
         });
     });
 
