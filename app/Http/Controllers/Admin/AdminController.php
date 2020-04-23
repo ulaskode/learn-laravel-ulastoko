@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Admin;
 use App\Http\Requests\Admin\AdminSaveProfile;
+use App\Http\Requests\ChangePassword;
 use Image;
 use File;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -167,9 +169,14 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function savePassword(Request $request, Admin $admin)
+    public function savePassword(ChangePassword $request, Admin $admin)
     {
-       return "saved";
+       $update = $admin->update(['password' => Hash::make($request->new_password)]);
+        if($update){
+            return redirect(route('admin.password',$admin->username))->with('success','Password has been updated.');
+        }else{
+            return redirect(route('admin.password',$admin->username))->with('error','Ops... something went wrong when updating your data');
+        }
     }
 
 }

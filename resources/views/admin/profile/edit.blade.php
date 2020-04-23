@@ -1,6 +1,6 @@
 @extends('admin.template.app')
 
-@section('title',$admin->name)
+@section('title',$admin->name . ' - Edit Profile')
 
 @section('content')
 <!-- Content Header (Page header) -->
